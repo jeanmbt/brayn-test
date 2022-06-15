@@ -4,12 +4,13 @@ import styles from "../styles/Home.module.css";
 
 import { authorizationOptions } from "../utils/authorizationOptions";
 import { Container, TableContainer, Paper, Typography } from "@mui/material";
-import { OverviewTable } from "../components/OverviewTable";
+import { OverviewTable } from "../components/overview/OverviewTable";
 
 const Home: NextPage = (props: any) => {
   const list = props.result._embedded.list_debits;
-  const { page, page_count, page_size, totalItems } = props.result;
-  const { first, last, next, self, previous } = props.result._links;
+  const { page, page_count, page_size, total_items } = props.result;
+  const { first, last, next, self } = props.result._links;
+  const fetchOptions = props.fetchOptions;
 
   return (
     <div>
@@ -24,8 +25,22 @@ const Home: NextPage = (props: any) => {
           Overview
         </Typography>
         <Container>
-          <TableContainer component={Paper}>
-            <OverviewTable list={list} />
+          <TableContainer
+            component={Paper}
+            sx={{ display: "flex", justifyItems: "center", flexDirection: "column" }}
+          >
+            <OverviewTable
+              fetchOptions={fetchOptions}
+              list={list}
+              pageCount={page_count}
+              page={page}
+              rowsPerPage={page_size}
+              count={total_items}
+              first={first}
+              next={next}
+              last={last}
+              self={self}
+            />
           </TableContainer>
         </Container>
       </main>
@@ -88,7 +103,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const result = await fetchedResults;
 
   return {
-    props: { result },
+    props: { result: result, fetchOptions: buildAuthorizedOptions },
   };
 };
 

@@ -31,20 +31,20 @@ export const TablePaginationActions = (props: TablePaginationActionsProps) => {
       <IconButton
         sx={{ width: "1.9em" }}
         onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
+        disabled={page === (0 | 1)}
         aria-label="first page"
       >
         «
       </IconButton>
       <IconButton
         onClick={handleBackButtonClick}
-        disabled={page === 0}
+        disabled={page === (0 | 1)}
         aria-label="previous page"
         sx={{ width: "1.9em" }}
       >
         ﹤
       </IconButton>
-      {page + 1}
+      {page}
       <IconButton
         onClick={handleNextButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
