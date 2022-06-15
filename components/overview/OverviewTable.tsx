@@ -44,10 +44,8 @@ export const OverviewTable = (props: any) => {
             fetchOptions
           ).then(async (response) => {
             const data = await response.json();
-            console.log(data.page);
             const listData = data._embedded?.list_debits;
             listData && setCurrentList(listData);
-
             if (!response.ok) {
               const error = (authData && authData.message) || response.status;
               return Promise.reject(error);
@@ -72,10 +70,12 @@ export const OverviewTable = (props: any) => {
         <TableBody>
           <OverviewItemRow list={currentList} />
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <Pagination page={page} count={pageCount} onChange={handleChangePage}></Pagination>
+          </TableRow>
+        </TableFooter>
       </Table>
-      <TableFooter>
-        <Pagination page={page} count={pageCount} onChange={handleChangePage}></Pagination>
-      </TableFooter>
     </>
   );
 };
