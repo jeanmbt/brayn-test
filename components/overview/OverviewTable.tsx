@@ -1,4 +1,4 @@
-import { Table, TableBody, Pagination } from "@mui/material";
+import { Table, TableBody, Pagination, TableRow, Button, TableFooter } from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { authorizationOptions } from "../../utils/authorizationOptions";
@@ -12,9 +12,16 @@ export const OverviewTable = (props: any) => {
   const [currentList, setCurrentList] = useState([]);
   const [page, setPage] = useState(0);
 
-  // const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-  //   setPage(page);
+  // console.log("trigger" + trigger);
+
+  // const triggerFetch = () => {
+  //   setTrigger(true);
+  //   console.log(trigger);
   // };
+
+  const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
+    setPage(page);
+  };
 
   useEffect(() => {
     // Authorizes with oAuth
@@ -36,26 +43,23 @@ export const OverviewTable = (props: any) => {
             Authorization: `Bearer ${authData.access_token}`,
           },
         };
+        // if first or last page
+        page >= 1 && page <= pageCount && console.log("page" + page);
+        // once authorized, fetches list of invoices
+        fetch(
+          `https://api.fynbill.fynbird.io/v1/invoices/debit/list?page=${page}`,
+          fetchOptions
+        ).then(async (response) => {
+          const data = await response.json();
+          console.log(data.page);
+          const listData = data._embedded?.list_debits;
+          listData && setCurrentList(listData);
 
-        page > 1 &&
-          // once authorized, fetches list of invoices
-          fetch(
-            `https://api.fynbill.fynbird.io/v1/invoices/debit/list?page=${page}`,
-            fetchOptions
-          ).then(async (response) => {
-            const data = await response.json();
-            console.log(data);
-            // data &&
-            //   data._embedded.list_debits.map((item: any) => {
-            //     setCurrentList([...currentList, item]);
-            //   });
-
-            console.log(currentList);
-            if (!response.ok) {
-              const error = (authData && authData.message) || response.status;
-              return Promise.reject(error);
-            }
-          });
+          if (!response.ok) {
+            const error = (authData && authData.message) || response.status;
+            return Promise.reject(error);
+          }
+        });
       })
 
       // Log  error if unsuccesfull
@@ -65,29 +69,44 @@ export const OverviewTable = (props: any) => {
   }, [page]);
 
   useEffect(() => {
-    setCurrentList(list);
-    console.log(list);
-  }, [list]);
+    page === 0 && setCurrentList(list);
+  }, []);
+
+  // console.log(currentList);
+  // console.log("was fetched?" + wasFetched);
 
   return (
     <>
       <Table>
         <OverviewTableHeader />
         <TableBody>
-          <OverviewItemRow list={list} />
+          <OverviewItemRow list={currentList} />
         </TableBody>
       </Table>
-      {/* TODO: make infinite scroll  instead */}
+      <TableFooter>
+        <Pagination page={page} count={pageCount} onChange={handleChangePage}></Pagination>
+      </TableFooter>
 
-      <InView
-        onChange={(inView) => {
+      {/* Infinte Scroll */}
+      {/* <InView
+        onChange={() => {
           let newPage = 1;
-          if (InView && page <= pageCount) {
+          if (page <= pageCount) {
             newPage = page + 1;
+            setPage(newPage);
+            console.log(page);
+            triggerFetch();
           }
-          setPage(newPage);
         }}
-      />
+      /> */}
+
+      {/* <Button
+        onClick={() => {
+          triggerFetch();
+        }}
+      >
+        Load More
+      </Button> */}
     </>
   );
 };

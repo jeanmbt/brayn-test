@@ -8,7 +8,7 @@ export const OverviewItemRow = (props: any) => {
       {list.map((invoice: any) => {
         return (
           <TableRow key={`${invoice.id}`}>
-            <TableCell>{invoice.billing_number}</TableCell>
+            <TableCell>{invoice.id}</TableCell>
             <TableCell>{invoice.receipt_date}</TableCell>
             <TableCell>
               {invoice.netto} {invoice.foreign_currency}
