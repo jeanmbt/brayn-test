@@ -1,8 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Table, TableBody, Pagination, TableRow, Button, TableFooter } from "@mui/material";
-
 import { useEffect, useState } from "react";
 import { authorizationOptions } from "../../utils/authorizationOptions";
-import { InView } from "react-intersection-observer";
 import { OverviewItemRow } from "./OverviewItemRow";
 import { OverviewTableHeader } from "./OverviewTableHeader";
 
@@ -11,13 +10,6 @@ export const OverviewTable = (props: any) => {
   const { pageCount, list } = props;
   const [currentList, setCurrentList] = useState([]);
   const [page, setPage] = useState(0);
-
-  // console.log("trigger" + trigger);
-
-  // const triggerFetch = () => {
-  //   setTrigger(true);
-  //   console.log(trigger);
-  // };
 
   const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     setPage(page);
@@ -44,22 +36,23 @@ export const OverviewTable = (props: any) => {
           },
         };
         // if first or last page
-        page >= 1 && page <= pageCount && console.log("page" + page);
-        // once authorized, fetches list of invoices
-        fetch(
-          `https://api.fynbill.fynbird.io/v1/invoices/debit/list?page=${page}`,
-          fetchOptions
-        ).then(async (response) => {
-          const data = await response.json();
-          console.log(data.page);
-          const listData = data._embedded?.list_debits;
-          listData && setCurrentList(listData);
+        page >= 1 &&
+          page <= pageCount &&
+          // once authorized, fetches list of invoices
+          fetch(
+            `https://api.fynbill.fynbird.io/v1/invoices/debit/list?page=${page}`,
+            fetchOptions
+          ).then(async (response) => {
+            const data = await response.json();
+            console.log(data.page);
+            const listData = data._embedded?.list_debits;
+            listData && setCurrentList(listData);
 
-          if (!response.ok) {
-            const error = (authData && authData.message) || response.status;
-            return Promise.reject(error);
-          }
-        });
+            if (!response.ok) {
+              const error = (authData && authData.message) || response.status;
+              return Promise.reject(error);
+            }
+          });
       })
 
       // Log  error if unsuccesfull
@@ -72,9 +65,6 @@ export const OverviewTable = (props: any) => {
     page === 0 && setCurrentList(list);
   }, []);
 
-  // console.log(currentList);
-  // console.log("was fetched?" + wasFetched);
-
   return (
     <>
       <Table>
@@ -86,27 +76,6 @@ export const OverviewTable = (props: any) => {
       <TableFooter>
         <Pagination page={page} count={pageCount} onChange={handleChangePage}></Pagination>
       </TableFooter>
-
-      {/* Infinte Scroll */}
-      {/* <InView
-        onChange={() => {
-          let newPage = 1;
-          if (page <= pageCount) {
-            newPage = page + 1;
-            setPage(newPage);
-            console.log(page);
-            triggerFetch();
-          }
-        }}
-      /> */}
-
-      {/* <Button
-        onClick={() => {
-          triggerFetch();
-        }}
-      >
-        Load More
-      </Button> */}
     </>
   );
 };
