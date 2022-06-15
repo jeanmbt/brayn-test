@@ -1,45 +1,41 @@
-import type { GetServerSideProps, NextPage } from "next";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import { GetServerSideProps, NextPage } from "next";
+import { useRouter } from "next/router";
+import { authorizationOptions } from "../../utils/authorizationOptions";
+import { Container, Button, Typography, Divider } from "@mui/material";
+import { InvoiceBillingData } from "../../components/invoice/InvoiceBillingData";
+import { InvoiceTable } from "../../components/invoice/InvoiceTable";
+import { grey } from "@mui/material/colors";
 
-import { authorizationOptions } from "../utils/authorizationOptions";
-import { Container, TableContainer, Paper, Typography } from "@mui/material";
-import { OverviewTable } from "../components/OverviewTable";
-
-const Home: NextPage = (props: any) => {
-  const list = props.result._embedded.list_debits;
-  const { page, page_count, page_size, totalItems } = props.result;
-  const { first, last, next, self, previous } = props.result._links;
+const Invoice: NextPage = (props: any) => {
+  const invoice = props.result;
 
   return (
-    <div>
-      <Head>
-        <title>Brayn Challenge</title>
-        <meta name="description" content="Brayn challenge by Jean Michel Battirola" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Container sx={{ padding: 2 }}>
+      <Button variant="contained" href="/" sx={{ marginY: 1 }}>
+        back to overview
+      </Button>
 
-      <main className={styles.main}>
-        <Typography variant="h3" marginBottom={2}>
-          Overview
-        </Typography>
-        <Container>
-          <TableContainer component={Paper}>
-            <OverviewTable list={list} />
-          </TableContainer>
-        </Container>
-      </main>
-
-      <footer className={styles.footer}>
-        <a href="https://jeanbattirola.com" target="_blank" rel="noopener noreferrer">
-          By Jean Michel Battirola
-        </a>
-      </footer>
-    </div>
+      <Container
+        sx={{
+          padding: 10,
+          border: `1px solid ${grey[200]}`,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h3">INVOICE #{invoice.billing_number}</Typography>
+        <InvoiceBillingData invoice={invoice} />
+        <Divider sx={{ width: "100%" }} />
+        <InvoiceTable invoice={invoice} />
+      </Container>
+    </Container>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.query;
+
   // Authorizes API call with oAuth
   const buildAuthorizedOptions = await fetch(
     "https://api.fynbill.fynbird.io/oauth",
@@ -70,8 +66,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // Avoids passing empty fetchOptions when fetching data
   const options: any = buildAuthorizedOptions && buildAuthorizedOptions;
 
-  //Fetches List of results
-  const fetchedResults = fetch("https://api.fynbill.fynbird.io/v1/invoices/debit/list", options)
+  //Fetches Invoice
+  const fetchedResults = fetch(
+    `https://api.fynbill.fynbird.io/v1/invoices/debit/list/${id}`,
+    options
+  )
     .then(async (response) => {
       const data = await response.json();
       if (!response.ok) {
@@ -86,10 +85,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     });
 
   const result = await fetchedResults;
-
   return {
     props: { result },
   };
 };
 
-export default Home;
+export default Invoice;
