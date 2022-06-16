@@ -9,7 +9,7 @@ import { OverviewTable } from "../components/overview/OverviewTable";
 const Home: NextPage = (props: any) => {
   const list = props.result._embedded.list_debits;
   const { page, page_count, page_size, total_items } = props.result;
-  const { first, last, next, self } = props.result._links;
+
   const fetchOptions = props.fetchOptions;
 
   return (
@@ -34,12 +34,7 @@ const Home: NextPage = (props: any) => {
               list={list}
               pageCount={page_count}
               page={page}
-              rowsPerPage={page_size}
               count={total_items}
-              first={first}
-              next={next}
-              last={last}
-              self={self}
             />
           </TableContainer>
         </Container>

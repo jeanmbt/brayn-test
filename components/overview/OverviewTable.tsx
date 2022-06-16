@@ -1,8 +1,7 @@
-import { Table, TableBody, Pagination } from "@mui/material";
-
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Table, TableBody, Pagination, TableRow, Button, TableFooter } from "@mui/material";
 import { useEffect, useState } from "react";
 import { authorizationOptions } from "../../utils/authorizationOptions";
-import { InView } from "react-intersection-observer";
 import { OverviewItemRow } from "./OverviewItemRow";
 import { OverviewTableHeader } from "./OverviewTableHeader";
 
@@ -12,9 +11,9 @@ export const OverviewTable = (props: any) => {
   const [currentList, setCurrentList] = useState([]);
   const [page, setPage] = useState(0);
 
-  // const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-  //   setPage(page);
-  // };
+  const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
+    setPage(page);
+  };
 
   useEffect(() => {
     // Authorizes with oAuth
@@ -36,21 +35,17 @@ export const OverviewTable = (props: any) => {
             Authorization: `Bearer ${authData.access_token}`,
           },
         };
-
-        page > 1 &&
+        // if first or last page
+        page >= 1 &&
+          page <= pageCount &&
           // once authorized, fetches list of invoices
           fetch(
             `https://api.fynbill.fynbird.io/v1/invoices/debit/list?page=${page}`,
             fetchOptions
           ).then(async (response) => {
             const data = await response.json();
-            console.log(data);
-            // data &&
-            //   data._embedded.list_debits.map((item: any) => {
-            //     setCurrentList([...currentList, item]);
-            //   });
-
-            console.log(currentList);
+            const listData = data._embedded?.list_debits;
+            listData && setCurrentList(listData);
             if (!response.ok) {
               const error = (authData && authData.message) || response.status;
               return Promise.reject(error);
@@ -65,29 +60,22 @@ export const OverviewTable = (props: any) => {
   }, [page]);
 
   useEffect(() => {
-    setCurrentList(list);
-    console.log(list);
-  }, [list]);
+    page === 0 && setCurrentList(list);
+  }, []);
 
   return (
     <>
       <Table>
         <OverviewTableHeader />
         <TableBody>
-          <OverviewItemRow list={list} />
+          <OverviewItemRow list={currentList} />
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <Pagination page={page} count={pageCount} onChange={handleChangePage}></Pagination>
+          </TableRow>
+        </TableFooter>
       </Table>
-      {/* TODO: make infinite scroll  instead */}
-
-      <InView
-        onChange={(inView) => {
-          let newPage = 1;
-          if (InView && page <= pageCount) {
-            newPage = page + 1;
-          }
-          setPage(newPage);
-        }}
-      />
     </>
   );
 };
