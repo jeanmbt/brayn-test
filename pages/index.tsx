@@ -20,7 +20,7 @@ const Home: NextPage = (props: any) => {
 
       <main className={styles.main}>
         <Typography variant="h2" marginBottom={4}>
-          Invoice overview
+          Invoices overview
         </Typography>
         <Container>
           <TableContainer component={Paper} sx={paginationStyle}>
