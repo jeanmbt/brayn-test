@@ -19,14 +19,14 @@ export const OverviewItemRow = (props: any) => {
         return (
           <TableRow sx={{ bgcolor: setBackgroundColor(index) }} key={`${invoice.id}`}>
             <TableCell>{invoice.id}</TableCell>
-            <TableCell>{invoice.receipt_date}</TableCell>
+            <TableCell>{invoice.receipt_date ? invoice.receipt_date : "-"}</TableCell>
             <TableCell>
               {invoice.netto} {invoice.foreign_currency}
             </TableCell>
             <TableCell>
               {invoice.brutto} {invoice.foreign_currency}
             </TableCell>
-            <TableCell>{invoice.balance}</TableCell>
+            <TableCell>{invoice.balance === 0 ? "paid" : invoice.balance}</TableCell>
             <TableCell>{invoice.Debitor.name}</TableCell>
             <TableCell padding="none" align="center">
               <Button href={`invoice/${invoice.id}`} variant="contained">

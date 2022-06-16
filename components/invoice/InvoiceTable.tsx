@@ -1,6 +1,6 @@
 import { Paper, Table, TableBody, TableContainer } from "@mui/material";
 import { Item } from "../../types/item";
-import { InvoiceItemRow, InvoiceTableHead, InvoiceTotalsRow } from "./InvoiceTableParts/";
+import { InvoiceItemRow, InvoiceTableHead, InvoiceTotalsRow } from "./InvoiceTableParts";
 
 export const InvoiceTable = (props: { invoice: any }) => {
   const invoice = props.invoice;

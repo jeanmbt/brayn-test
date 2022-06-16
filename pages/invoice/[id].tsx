@@ -10,6 +10,7 @@ import Head from "next/head";
 
 const Invoice: NextPage = (props: any) => {
   const invoice = props.invoice;
+  console.log(invoice);
 
   return (
     <Container sx={{ padding: 2, marginBottom: 5 }}>
@@ -36,7 +37,9 @@ const Invoice: NextPage = (props: any) => {
       </ButtonGroup>
 
       <InvoiceContainer>
-        <Typography variant="h3">INVOICE #{invoice.id}</Typography>
+        <Typography variant="h3">
+          INVOICE {invoice.billing_number ? `#${invoice.billing_number}` : `id: ${invoice.id}`}
+        </Typography>
         <InvoiceBillingData invoice={invoice} />
         <Divider sx={{ width: "100%" }} />
         <InvoiceTable invoice={invoice} />
@@ -56,8 +59,6 @@ const Invoice: NextPage = (props: any) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
-  // Authorizes API call with oAuth
-  const token = await makeAuthorizationRequest();
 
   const getInvoice = async () => {
     const token = await makeAuthorizationRequest();
