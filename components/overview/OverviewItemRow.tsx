@@ -1,13 +1,23 @@
 import { TableRow, TableCell, Button } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { grey } from "@mui/material/colors";
 
 export const OverviewItemRow = (props: any) => {
   const list = props.list;
+
+  const isOdd = (num: number) => {
+    return num % 2;
+  };
+
+  const setBackgroundColor = (number: number) => {
+    return isOdd(number) ? grey[50] : "white";
+  };
+
   return (
     <>
-      {list.map((invoice: any) => {
+      {list.map((invoice: any, index: number) => {
         return (
-          <TableRow key={`${invoice.id}`}>
+          <TableRow sx={{ bgcolor: setBackgroundColor(index) }} key={`${invoice.id}`}>
             <TableCell>{invoice.id}</TableCell>
             <TableCell>{invoice.receipt_date}</TableCell>
             <TableCell>

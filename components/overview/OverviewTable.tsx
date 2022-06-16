@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Table, TableBody, Pagination, TableRow, Button, TableFooter } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import { useEffect, useState } from "react";
 import { authorizationOptions } from "../../utils/authorizationOptions";
 import { OverviewItemRow } from "./OverviewItemRow";
@@ -70,12 +71,8 @@ export const OverviewTable = (props: any) => {
         <TableBody>
           <OverviewItemRow list={currentList} />
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <Pagination page={page} count={pageCount} onChange={handleChangePage}></Pagination>
-          </TableRow>
-        </TableFooter>
       </Table>
+      <Pagination page={page} count={pageCount} onChange={handleChangePage}></Pagination>
     </>
   );
 };
