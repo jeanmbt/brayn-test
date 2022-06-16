@@ -1,14 +1,5 @@
 import { Container, Box, Typography } from "@mui/material";
-import { styled } from "@mui/system";
-
-const StyledBox = styled(Box)({
-  display: "flex",
-  justifyContent: "space-between",
-});
-
-const StyledTypography = styled(Typography)({
-  fontWeight: "500",
-});
+import { StyledBox, StyledTypography } from "../../styles/componentsStyle";
 
 export const InvoiceBillingData = (props: any) => {
   const invoice = props.invoice;

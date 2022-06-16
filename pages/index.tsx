@@ -5,10 +5,11 @@ import { Container, TableContainer, Paper, Typography } from "@mui/material";
 import { OverviewTable } from "../components/overview/OverviewTable";
 import { makeAuthorizationRequest } from "../utils/makeAuthorizationRequest";
 import { blueGrey, grey } from "@mui/material/colors";
+import { paginationStyle } from "../styles/componentsStyle";
 
 const Home: NextPage = (props: any) => {
   const list = props.data._embedded.list_debits;
-  const { page, page_count, page_size, total_items } = props.data;
+  const { page, page_count, total_items } = props.data;
 
   return (
     <div>
@@ -23,29 +24,16 @@ const Home: NextPage = (props: any) => {
           Invoice overview
         </Typography>
         <Container>
-          <TableContainer
-            component={Paper}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "column",
-              bgcolor: blueGrey[100],
-            }}
-          >
+          <TableContainer component={Paper} sx={paginationStyle}>
             <OverviewTable page={page} list={list} pageCount={page_count} count={total_items} />
           </TableContainer>
         </Container>
       </main>
-
-      <footer className={styles.footer}>
-        <a href="https://jeanbattirola.com" target="_blank" rel="noopener noreferrer">
-          By Jean Michel Battirola
-        </a>
-      </footer>
     </div>
   );
 };
 
+// Gets first data
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = await makeAuthorizationRequest();
 
@@ -59,7 +47,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       });
       const data = await res.json();
-
       return data;
     } catch (e) {
       console.error(e);

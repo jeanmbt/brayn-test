@@ -1,15 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Table, TableBody, Pagination, TableRow, Button, TableFooter } from "@mui/material";
-
-import { useRouter } from "next/router";
+import { Table, TableBody, Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import { makeAuthorizationRequest } from "../../utils/makeAuthorizationRequest";
-
 import { OverviewItemRow } from "./OverviewItemRow";
 import { OverviewTableHeader } from "./OverviewTableHeader";
 
 export const OverviewTable = (props: any) => {
-  type List = typeof list;
   const { pageCount, list } = props;
   const [currentList, setCurrentList] = useState([]);
   const [page, setPage] = useState(0);
@@ -18,6 +14,7 @@ export const OverviewTable = (props: any) => {
     setPage(page);
   };
 
+  // Fetches more results and change current list when page changes
   useEffect(() => {
     const getInvoices = async () => {
       if (page === 0) {
@@ -37,11 +34,8 @@ export const OverviewTable = (props: any) => {
             },
           }
         );
-        const {
-          _embedded: { list_debits },
-        } = await res.json();
-
-        setCurrentList(list_debits);
+        const data = await res.json();
+        setCurrentList(data._embedded?.list_debits);
       } catch (e) {
         console.error(e);
       }
@@ -52,8 +46,6 @@ export const OverviewTable = (props: any) => {
   useEffect(() => {
     page === 0 && setCurrentList(list);
   }, []);
-
-  useEffect(() => {});
 
   return (
     <>

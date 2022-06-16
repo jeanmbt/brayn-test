@@ -1,44 +1,37 @@
 import { GetServerSideProps, NextPage } from "next";
-import { Container, Button, Typography, Divider, Paper } from "@mui/material";
+import { Container, Button, Typography, Divider, Paper, ButtonGroup, styled } from "@mui/material";
 import { InvoiceBillingData } from "../../components/invoice/InvoiceBillingData";
 import { InvoiceTable } from "../../components/invoice/InvoiceTable";
-import { grey } from "@mui/material/colors";
 import { makeAuthorizationRequest } from "../../utils/makeAuthorizationRequest";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { fetchFile } from "../../utils/fetchFile";
+import { InvoiceContainer } from "../../styles/componentsStyle";
 
 const Invoice: NextPage = (props: any) => {
   const invoice = props.invoice;
-  const file = props.file;
-
-  console.log(file);
-
-  const handleDownloadClick = () => {
-    return file;
-  };
 
   return (
     <Container sx={{ padding: 2 }}>
-      <Button variant="contained" href="/" sx={{ marginY: 1 }}>
-        back to overview
-      </Button>
+      <ButtonGroup variant="text" aria-label="outlined button group">
+        <Button href="/">
+          <ArrowBackIcon />
+        </Button>
+      </ButtonGroup>
 
-      <Container
-        sx={{
-          padding: 10,
-          border: `1px solid ${grey[200]}`,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-        component={Paper}
-      >
+      <InvoiceContainer>
         <Typography variant="h3">INVOICE #{invoice.billing_number}</Typography>
         <InvoiceBillingData invoice={invoice} />
         <Divider sx={{ width: "100%" }} />
         <InvoiceTable invoice={invoice} />
-        <Button sx={{ marginTop: 3 }} onClick={handleDownloadClick}>
+        <Button
+          sx={{ marginY: 4 }}
+          onClick={() => {
+            fetchFile(invoice);
+          }}
+        >
           Download invoice
         </Button>
-      </Container>
+      </InvoiceContainer>
     </Container>
   );
 };
@@ -59,7 +52,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       });
       const data = await res.json();
-
       return data;
     } catch (e) {
       console.error(e);
@@ -67,28 +59,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 
   const invoice = await getInvoice();
-
-  const fetchFile = async (token: string) => {
-    try {
-      const token = await makeAuthorizationRequest();
-      const res = await fetch(invoice.file.file_url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/pdf",
-          "Content-Disposition": `attachment; filename=${invoice.file.filename}`,
-          Authorization: `Bearer ${token}`,
-          encoding: "binary",
-          responseType: "blob",
-        },
-      });
-
-      return res;
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  const file = await fetchFile(token);
-  console.log(file);
 
   return {
     props: { invoice },
