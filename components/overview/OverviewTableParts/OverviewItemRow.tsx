@@ -18,7 +18,9 @@ export const OverviewItemRow = (props: any) => {
       {list?.map((invoice: any, index: number) => {
         return (
           <TableRow sx={{ bgcolor: setBackgroundColor(index) }} key={`${invoice.id}`}>
-            <TableCell>{invoice.id}</TableCell>
+            <TableCell>
+              {invoice.billing_number ? invoice.billing_number : `id${invoice.id}`}
+            </TableCell>
             <TableCell>{invoice.receipt_date ? invoice.receipt_date : "-"}</TableCell>
             <TableCell>
               {invoice.netto} {invoice.foreign_currency}
