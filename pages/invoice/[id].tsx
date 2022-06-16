@@ -50,7 +50,7 @@ const Invoice: NextPage = (props: any) => {
             fetchFile(invoice);
           }}
         >
-          Download invoice
+          DOWNLOAD INVOICE
         </Button>
       </InvoiceContainer>
     </Container>
