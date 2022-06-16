@@ -28,7 +28,7 @@ export const OverviewItemRow = (props: any) => {
             <TableCell>
               {invoice.brutto} {invoice.foreign_currency}
             </TableCell>
-            <TableCell>{invoice.balance === 0 ? "paid" : invoice.balance}</TableCell>
+            <TableCell>{invoice.balance === 0 ? "paid (0)" : invoice.balance}</TableCell>
             <TableCell>{invoice.Debitor.name}</TableCell>
             <TableCell padding="none" align="center">
               <Button href={`invoice/${invoice.id}`} variant="contained">
