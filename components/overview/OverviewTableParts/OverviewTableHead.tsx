@@ -1,9 +1,10 @@
 import { TableCell, TableHead, TableRow } from "@mui/material";
+import { blueGrey } from "@mui/material/colors";
 
-export const OverviewTableHeader = () => {
+export const OverviewTableHead = () => {
   return (
     <>
-      <TableHead>
+      <TableHead sx={{ bgcolor: blueGrey[100] }}>
         <TableRow>
           <TableCell width={80}>#</TableCell>
           <TableCell width={150}>Date</TableCell>

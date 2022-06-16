@@ -1,14 +1,5 @@
 import { Container, Box, Typography } from "@mui/material";
-import { styled } from "@mui/system";
-
-const StyledBox = styled(Box)({
-  display: "flex",
-  justifyContent: "space-between",
-});
-
-const StyledTypography = styled(Typography)({
-  fontWeight: "500",
-});
+import { StyledBox, StyledTypography } from "../../styles/componentStyles";
 
 export const InvoiceBillingData = (props: any) => {
   const invoice = props.invoice;
@@ -21,14 +12,14 @@ export const InvoiceBillingData = (props: any) => {
           <Typography variant="h6" fontSize={15}>
             Bill to:
           </Typography>
-          {/* TODO: abstract into function */}
-          <Box>{debitor.name}</Box>
-          <Box>{debitor.email}</Box>
-          <Box>{debitor.phone}</Box>
-          <Box>
+          {/* TODO: abstract into function, make conditional */}
+          <StyledBox>{debitor.name}</StyledBox>
+          <StyledBox>{debitor.email}</StyledBox>
+          <StyledBox>{debitor.phone}</StyledBox>
+          <StyledBox>
             {debitor.street}
             {debitor.postcode}, {debitor.location}
-          </Box>
+          </StyledBox>
         </Box>
 
         <Box sx={{ display: "grid", width: 200 }}>

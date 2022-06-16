@@ -1,92 +1,79 @@
 import { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
-import { authorizationOptions } from "../../utils/authorizationOptions";
-import { Container, Button, Typography, Divider } from "@mui/material";
-import { InvoiceBillingData } from "../../components/invoice/InvoiceBillingData";
-import { InvoiceTable } from "../../components/invoice/InvoiceTable";
-import { grey } from "@mui/material/colors";
+import { Container, Button, Typography, Divider, ButtonGroup, Tooltip } from "@mui/material";
+import { InvoiceBillingData, InvoiceTable } from "../../components/invoice/";
+import { makeAuthorizationRequest } from "../../utils/makeAuthorizationRequest";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { fetchFile } from "../../utils/fetchFile";
+import { InvoiceContainer } from "../../styles/componentStyles";
+import DownloadIcon from "@mui/icons-material/Download";
 
 const Invoice: NextPage = (props: any) => {
-  const invoice = props.result;
+  const invoice = props.invoice;
 
   return (
-    <Container sx={{ padding: 2 }}>
-      <Button variant="contained" href="/" sx={{ marginY: 1 }}>
-        back to overview
-      </Button>
+    <Container sx={{ padding: 2, marginBottom: 5 }}>
+      <ButtonGroup variant="text" aria-label="outlined button group">
+        <Tooltip title="Back to invoice overview">
+          <Button href="/">
+            <ArrowBackIcon />
+          </Button>
+        </Tooltip>
+        <Tooltip title="Download invoice">
+          <Button
+            onClick={() => {
+              fetchFile(invoice);
+            }}
+          >
+            <DownloadIcon />
+          </Button>
+        </Tooltip>
+      </ButtonGroup>
 
-      <Container
-        sx={{
-          padding: 10,
-          border: `1px solid ${grey[200]}`,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="h3">INVOICE #{invoice.billing_number}</Typography>
+      <InvoiceContainer>
+        <Typography variant="h3">INVOICE #{invoice.id}</Typography>
         <InvoiceBillingData invoice={invoice} />
         <Divider sx={{ width: "100%" }} />
         <InvoiceTable invoice={invoice} />
-      </Container>
+        <Button
+          sx={{ marginY: 4 }}
+          variant="contained"
+          onClick={() => {
+            fetchFile(invoice);
+          }}
+        >
+          Download invoice
+        </Button>
+      </InvoiceContainer>
     </Container>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
-
   // Authorizes API call with oAuth
-  const buildAuthorizedOptions = await fetch(
-    "https://api.fynbill.fynbird.io/oauth",
-    authorizationOptions
-  )
-    .then(async (response) => {
-      const authorizationData = await response.json();
-      // Returns Promise with error if no response
-      if (!response.ok) {
-        const error = (authorizationData && authorizationData.message) || response.status;
-        return Promise.reject(error);
-      }
+  const token = await makeAuthorizationRequest();
 
-      const fetchOptions = {
+  const getInvoice = async () => {
+    const token = await makeAuthorizationRequest();
+    try {
+      const res = await fetch(`https://api.fynbill.fynbird.io/v1/invoices/debit/list/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authorizationData.access_token}`,
+          Authorization: `Bearer ${token}`,
         },
-      };
+      });
+      const data = await res.json();
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-      return fetchOptions;
-    })
-    .catch((error) => {
-      console.error("There was an error!", error);
-    });
+  const invoice = await getInvoice();
 
-  // Avoids passing empty fetchOptions when fetching data
-  const options: any = buildAuthorizedOptions && buildAuthorizedOptions;
-
-  //Fetches Invoice
-  const fetchedResults = fetch(
-    `https://api.fynbill.fynbird.io/v1/invoices/debit/list/${id}`,
-    options
-  )
-    .then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) {
-        const error = (data && data.message) || response.status;
-        return Promise.reject(error);
-      } else {
-        return JSON.parse(JSON.stringify(data));
-      }
-    })
-    .catch((error) => {
-      console.error("There was an error!", error);
-    });
-
-  const result = await fetchedResults;
   return {
-    props: { result },
+    props: { invoice },
   };
 };
 

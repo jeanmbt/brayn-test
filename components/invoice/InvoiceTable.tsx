@@ -1,8 +1,6 @@
-import { Table, TableBody, TableContainer } from "@mui/material";
+import { Paper, Table, TableBody, TableContainer } from "@mui/material";
 import { Item } from "../../types/item";
-import { ItemRow } from "./TableParts/ItemRow";
-import { TableHeader } from "./TableParts/TableHeader";
-import { TotalsRow } from "./TableParts/TotalsRow";
+import { InvoiceItemRow, InvoiceTableHead, InvoiceTotalsRow } from "./InvoiceTableParts/";
 
 export const InvoiceTable = (props: { invoice: any }) => {
   const invoice = props.invoice;
@@ -16,16 +14,16 @@ export const InvoiceTable = (props: { invoice: any }) => {
 
   return (
     <>
-      <TableContainer sx={{ padding: 3, marginTop: 5 }}>
+      <TableContainer sx={{ padding: 3, marginTop: 5 }} component={Paper}>
         <Table>
-          <TableHeader />
+          <InvoiceTableHead />
           <TableBody>
             {/* Render a table row for each Invoice item */}
             {invoice.items.map((item: Item) => {
-              return <ItemRow key={`item-${item.id}`} item={item} computeVat={computeVat} />;
+              return <InvoiceItemRow key={`item-${item.id}`} item={item} computeVat={computeVat} />;
             })}
           </TableBody>
-          <TotalsRow invoice={invoice} />
+          <InvoiceTotalsRow invoice={invoice} />
         </Table>
       </TableContainer>
     </>
