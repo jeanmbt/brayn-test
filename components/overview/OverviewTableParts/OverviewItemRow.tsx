@@ -1,4 +1,4 @@
-import { TableRow, TableCell, Button } from "@mui/material";
+import { TableRow, TableCell, Button, Tooltip } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { blueGrey } from "@mui/material/colors";
 
@@ -31,9 +31,11 @@ export const OverviewItemRow = (props: any) => {
             <TableCell>{invoice.balance === 0 ? "paid (0)" : invoice.balance}</TableCell>
             <TableCell>{invoice.Debitor.name}</TableCell>
             <TableCell padding="none" align="center">
-              <Button href={`invoice/${invoice.id}`} variant="contained">
-                <OpenInNewIcon />
-              </Button>
+              <Tooltip title="See invoice" placement="left">
+                <Button href={`invoice/${invoice.id}`} variant="contained">
+                  <OpenInNewIcon />
+                </Button>
+              </Tooltip>
             </TableCell>
           </TableRow>
         );
