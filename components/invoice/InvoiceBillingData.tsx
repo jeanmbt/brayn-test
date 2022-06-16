@@ -1,5 +1,6 @@
 import { Container, Box, Typography } from "@mui/material";
 import { StyledBox, StyledTypography } from "../../styles/componentStyles";
+import { formatDate } from "../../utils/formatDate";
 
 export const InvoiceBillingData = (props: any) => {
   const invoice = props.invoice;
@@ -25,13 +26,14 @@ export const InvoiceBillingData = (props: any) => {
         <Box sx={{ display: "grid", width: 200 }}>
           {/* INVOICE DATE */}
           <StyledBox>
-            <StyledTypography>Invoice date:</StyledTypography> {invoice.receipt_date}
+            <StyledTypography>Invoice date:</StyledTypography>{" "}
+            {invoice.receipt_date ? formatDate(invoice.receipt_date) : "not available"}
           </StyledBox>
 
           {/* DUE DATE */}
           <StyledBox>
             <StyledTypography>Due date:</StyledTypography>
-            {invoice.due_date}
+            {invoice.due_date && formatDate(invoice.due_date)}
           </StyledBox>
 
           {/* OPEN AMOUNT */}

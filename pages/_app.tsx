@@ -6,7 +6,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import createEmotionCache from "../utility/createEmotionCache";
+import createEmotionCache from "../utils/createEmotionCache";
 import "../styles/globals.css";
 import Layout from "../components/Layout";
 import AppThemeOptions from "../styles/theme/AppThemeOptions";

@@ -1,6 +1,7 @@
 import { TableRow, TableCell, Button, Tooltip } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { blueGrey } from "@mui/material/colors";
+import { formatDate } from "../../../utils/formatDate";
 
 export const OverviewItemRow = (props: any) => {
   const list = props.list;
@@ -21,7 +22,9 @@ export const OverviewItemRow = (props: any) => {
             <TableCell>
               {invoice.billing_number ? `#${invoice.billing_number}` : `ID:${invoice.id}`}
             </TableCell>
-            <TableCell>{invoice.receipt_date ? invoice.receipt_date : "-"}</TableCell>
+            <TableCell>
+              {invoice.receipt_date ? formatDate(invoice.receipt_date) : "not available"}
+            </TableCell>
             <TableCell>
               {invoice.netto} {invoice.foreign_currency}
             </TableCell>
