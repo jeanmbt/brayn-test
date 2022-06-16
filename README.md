@@ -1,23 +1,39 @@
-This is a [Next.js](https://nextjs.org/), [MUI v5](https://mui.com/) and [Typescript](https://github.com/microsoft/TypeScript) starter. You can use this to start your Next.js + MUI + Typescript development faster and easier.
+## Arounhome Coding Challenge
 
-## Getting Started
+### About this project
 
-1. First download files.
-2. (Optional) If you want, You can also change the project name to whatever your like and also add the project name in "package.json".
-3. Run this command in the project directory to install dependencies:
+This project was created for Brayn.io coding challenge.
+You can check the demo [here](https://brayn-test-ky9ta3eax-jeanmbt.vercel.app/)
 
-```bash
+### Technologies
+
+This project was developed with the following technologies:
+
+- NextJs
+- Mui
+- TypeScript
+
+
+### Installing
+
+If you wish to download the code and run the project locally.
+**Cloning the Repository**
+
+```
+git clone git@github.com:jeanmbt/brayn-test.git
+cd brayn-test
+```
+
+**Installing dependencies**
+
+```
 npm i
-# or
-yarn
 ```
 
-4. You can run dev server with the following command:
-
-```bash
-npm run dev
-# or
-yarn dev
+**Serving**
+ 
+```
+next dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
