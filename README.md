@@ -1,4 +1,4 @@
-## Arounhome Coding Challenge
+## Brayn Coding Challenge
 
 ### About this project
 
