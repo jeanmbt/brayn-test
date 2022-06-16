@@ -59,6 +59,7 @@ export const OverviewTable = (props: any) => {
         console.error("There was an error!", error);
       });
   }, [page]);
+
   useEffect(() => {
     page === 0 && setCurrentList(list);
   }, []);
@@ -71,7 +72,15 @@ export const OverviewTable = (props: any) => {
           <OverviewItemRow list={currentList} />
         </TableBody>
       </Table>
-      <Pagination page={page} count={pageCount} onChange={handleChangePage}></Pagination>
+      <Pagination
+        color="primary"
+        sx={{ padding: 1 }}
+        page={page}
+        count={pageCount}
+        onChange={handleChangePage}
+        showFirstButton
+        showLastButton
+      ></Pagination>
     </>
   );
 };

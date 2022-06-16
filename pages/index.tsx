@@ -6,7 +6,7 @@ import { authorizationOptions } from "../utils/authorizationOptions";
 import { Container, TableContainer, Paper, Typography } from "@mui/material";
 import { OverviewTable } from "../components/overview/OverviewTable";
 import { makeAuthorizedRequest } from "../utils/makeAuthorizationRequest";
-import { grey } from "@mui/material/colors";
+import { blueGrey, grey } from "@mui/material/colors";
 
 const Home: NextPage = (props: any) => {
   const list = props.data._embedded.list_debits;
@@ -22,8 +22,8 @@ const Home: NextPage = (props: any) => {
       </Head>
 
       <main className={styles.main}>
-        <Typography variant="h3" marginBottom={4}>
-          Invoice Overview
+        <Typography variant="h2" marginBottom={4}>
+          Invoice overview
         </Typography>
         <Container>
           <TableContainer
@@ -32,7 +32,7 @@ const Home: NextPage = (props: any) => {
               display: "flex",
               alignItems: "center",
               flexDirection: "column",
-              bgcolor: grey[300],
+              bgcolor: blueGrey[100],
             }}
           >
             <OverviewTable

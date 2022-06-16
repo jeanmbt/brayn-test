@@ -1,6 +1,6 @@
 import { TableRow, TableCell, Button } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { grey } from "@mui/material/colors";
+import { blueGrey } from "@mui/material/colors";
 
 export const OverviewItemRow = (props: any) => {
   const list = props.list;
@@ -10,7 +10,7 @@ export const OverviewItemRow = (props: any) => {
   };
 
   const setBackgroundColor = (number: number) => {
-    return isOdd(number) ? grey[50] : "white";
+    return isOdd(number) ? blueGrey[50] : "white";
   };
 
   return (

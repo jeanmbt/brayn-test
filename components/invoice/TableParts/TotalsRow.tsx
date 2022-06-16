@@ -1,5 +1,5 @@
 import { TableBody, TableCell, TableFooter, TableRow } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { blueGrey, grey } from "@mui/material/colors";
 import { Item } from "../../../types/item";
 
 export const TotalsRow = (props: { invoice: any }) => {
@@ -22,7 +22,7 @@ export const TotalsRow = (props: { invoice: any }) => {
   return (
     <>
       <TableBody>
-        <TableRow sx={{ bgcolor: grey[100] }}>
+        <TableRow sx={{ bgcolor: blueGrey[50] }}>
           <TableCell>{sumAmount()}</TableCell>
           <TableCell />
           <TableCell>
@@ -39,10 +39,9 @@ export const TotalsRow = (props: { invoice: any }) => {
           <TableCell />
           <TableCell />
           <TableCell />
-          <TableCell sx={{ fontWeight: "500" }}>Total</TableCell>
-          <TableCell>
-            {invoice.brutto}
-            {invoice.foreign_currency}
+          <TableCell sx={{ fontWeight: "bold" }}>Total: </TableCell>
+          <TableCell sx={{ fontWeight: "bold" }}>
+            {invoice.brutto} {invoice.foreign_currency}
           </TableCell>
         </TableRow>
         <TableFooter />

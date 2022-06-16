@@ -1,4 +1,4 @@
-import { Table, TableBody, TableContainer } from "@mui/material";
+import { Paper, Table, TableBody, TableContainer } from "@mui/material";
 import { Item } from "../../types/item";
 import { ItemRow } from "./TableParts/ItemRow";
 import { TableHeader } from "./TableParts/TableHeader";
@@ -16,7 +16,7 @@ export const InvoiceTable = (props: { invoice: any }) => {
 
   return (
     <>
-      <TableContainer sx={{ padding: 3, marginTop: 5 }}>
+      <TableContainer sx={{ padding: 3, marginTop: 5 }} component={Paper}>
         <Table>
           <TableHeader />
           <TableBody>
