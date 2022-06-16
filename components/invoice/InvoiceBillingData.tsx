@@ -1,5 +1,5 @@
 import { Container, Box, Typography } from "@mui/material";
-import { StyledBox, StyledTypography } from "../../styles/componentsStyle";
+import { StyledBox, StyledTypography } from "../../styles/componentStyles";
 
 export const InvoiceBillingData = (props: any) => {
   const invoice = props.invoice;

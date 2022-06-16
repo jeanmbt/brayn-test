@@ -4,8 +4,7 @@ import styles from "../styles/Home.module.css";
 import { Container, TableContainer, Paper, Typography } from "@mui/material";
 import { OverviewTable } from "../components/overview/OverviewTable";
 import { makeAuthorizationRequest } from "../utils/makeAuthorizationRequest";
-import { blueGrey, grey } from "@mui/material/colors";
-import { paginationStyle } from "../styles/componentsStyle";
+import { paginationStyle } from "../styles/componentStyles";
 
 const Home: NextPage = (props: any) => {
   const list = props.data._embedded.list_debits;
@@ -33,10 +32,10 @@ const Home: NextPage = (props: any) => {
   );
 };
 
-// Gets first data
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = await makeAuthorizationRequest();
 
+  // Gets first page of invoices before rendering page
   const getFirstData = async (token: string) => {
     try {
       const res = await fetch(`https://api.fynbill.fynbird.io/v1/invoices/debit/list`, {

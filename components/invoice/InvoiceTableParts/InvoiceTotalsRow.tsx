@@ -1,8 +1,7 @@
-import { TableBody, TableCell, TableFooter, TableRow } from "@mui/material";
-import { blueGrey, grey } from "@mui/material/colors";
-import { Item } from "../../../types/item";
+import { TableBody, TableCell, TableRow } from "@mui/material";
+import { blueGrey } from "@mui/material/colors";
 
-export const TotalsRow = (props: { invoice: any }) => {
+export const InvoiceTotalsRow = (props: { invoice: any }) => {
   const invoice = props.invoice;
 
   const roundSubtotal = (brutto: number, netto: number) => {

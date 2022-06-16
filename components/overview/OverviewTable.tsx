@@ -2,8 +2,7 @@
 import { Table, TableBody, Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import { makeAuthorizationRequest } from "../../utils/makeAuthorizationRequest";
-import { OverviewItemRow } from "./OverviewItemRow";
-import { OverviewTableHeader } from "./OverviewTableHeader";
+import { OverviewItemRow, OverviewTableHead } from "./OverviewTableParts";
 
 export const OverviewTable = (props: any) => {
   const { pageCount, list } = props;
@@ -29,7 +28,6 @@ export const OverviewTable = (props: any) => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-
               Authorization: `Bearer ${token}`,
             },
           }
@@ -50,7 +48,7 @@ export const OverviewTable = (props: any) => {
   return (
     <>
       <Table>
-        <OverviewTableHeader />
+        <OverviewTableHead />
         <TableBody>
           <OverviewItemRow list={currentList} />
         </TableBody>
