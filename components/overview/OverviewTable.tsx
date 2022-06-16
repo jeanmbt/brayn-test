@@ -59,7 +59,6 @@ export const OverviewTable = (props: any) => {
         console.error("There was an error!", error);
       });
   }, [page]);
-
   useEffect(() => {
     page === 0 && setCurrentList(list);
   }, []);
