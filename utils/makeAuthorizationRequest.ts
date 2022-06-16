@@ -1,6 +1,6 @@
 import { authorizationOptions } from "./authorizationOptions";
 
-export async function makeAuthorizedRequest() {
+export async function makeAuthorizationRequest() {
   try {
     const res = await fetch(
       "https://api.fynbill.fynbird.io/oauth",

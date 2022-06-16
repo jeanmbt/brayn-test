@@ -1,13 +1,19 @@
 import { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
-import { authorizationOptions } from "../../utils/authorizationOptions";
-import { Container, Button, Typography, Divider } from "@mui/material";
+import { Container, Button, Typography, Divider, Paper } from "@mui/material";
 import { InvoiceBillingData } from "../../components/invoice/InvoiceBillingData";
 import { InvoiceTable } from "../../components/invoice/InvoiceTable";
 import { grey } from "@mui/material/colors";
+import { makeAuthorizationRequest } from "../../utils/makeAuthorizationRequest";
 
 const Invoice: NextPage = (props: any) => {
-  const invoice = props.result;
+  const invoice = props.invoice;
+  const file = props.file;
+
+  console.log(file);
+
+  const handleDownloadClick = () => {
+    return file;
+  };
 
   return (
     <Container sx={{ padding: 2 }}>
@@ -23,11 +29,15 @@ const Invoice: NextPage = (props: any) => {
           flexDirection: "column",
           alignItems: "center",
         }}
+        component={Paper}
       >
         <Typography variant="h3">INVOICE #{invoice.billing_number}</Typography>
         <InvoiceBillingData invoice={invoice} />
         <Divider sx={{ width: "100%" }} />
         <InvoiceTable invoice={invoice} />
+        <Button sx={{ marginTop: 3 }} onClick={handleDownloadClick}>
+          Download invoice
+        </Button>
       </Container>
     </Container>
   );
@@ -35,58 +45,53 @@ const Invoice: NextPage = (props: any) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
-
   // Authorizes API call with oAuth
-  const buildAuthorizedOptions = await fetch(
-    "https://api.fynbill.fynbird.io/oauth",
-    authorizationOptions
-  )
-    .then(async (response) => {
-      const authorizationData = await response.json();
-      // Returns Promise with error if no response
-      if (!response.ok) {
-        const error = (authorizationData && authorizationData.message) || response.status;
-        return Promise.reject(error);
-      }
+  const token = await makeAuthorizationRequest();
 
-      const fetchOptions = {
+  const getInvoice = async () => {
+    const token = await makeAuthorizationRequest();
+    try {
+      const res = await fetch(`https://api.fynbill.fynbird.io/v1/invoices/debit/list/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authorizationData.access_token}`,
+          Authorization: `Bearer ${token}`,
         },
-      };
+      });
+      const data = await res.json();
 
-      return fetchOptions;
-    })
-    .catch((error) => {
-      console.error("There was an error!", error);
-    });
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-  // Avoids passing empty fetchOptions when fetching data
-  const options: any = buildAuthorizedOptions && buildAuthorizedOptions;
+  const invoice = await getInvoice();
 
-  //Fetches Invoice
-  const fetchedResults = fetch(
-    `https://api.fynbill.fynbird.io/v1/invoices/debit/list/${id}`,
-    options
-  )
-    .then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) {
-        const error = (data && data.message) || response.status;
-        return Promise.reject(error);
-      } else {
-        return JSON.parse(JSON.stringify(data));
-      }
-    })
-    .catch((error) => {
-      console.error("There was an error!", error);
-    });
+  const fetchFile = async (token: string) => {
+    try {
+      const token = await makeAuthorizationRequest();
+      const res = await fetch(invoice.file.file_url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/pdf",
+          "Content-Disposition": `attachment; filename=${invoice.file.filename}`,
+          Authorization: `Bearer ${token}`,
+          encoding: "binary",
+          responseType: "blob",
+        },
+      });
 
-  const result = await fetchedResults;
+      return res;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const file = await fetchFile(token);
+  console.log(file);
+
   return {
-    props: { result },
+    props: { invoice },
   };
 };
 

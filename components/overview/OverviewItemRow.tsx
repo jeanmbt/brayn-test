@@ -15,7 +15,7 @@ export const OverviewItemRow = (props: any) => {
 
   return (
     <>
-      {list.map((invoice: any, index: number) => {
+      {list?.map((invoice: any, index: number) => {
         return (
           <TableRow sx={{ bgcolor: setBackgroundColor(index) }} key={`${invoice.id}`}>
             <TableCell>{invoice.id}</TableCell>

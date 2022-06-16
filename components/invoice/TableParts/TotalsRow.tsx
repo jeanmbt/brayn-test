@@ -17,8 +17,6 @@ export const TotalsRow = (props: { invoice: any }) => {
     return result;
   };
 
-  console.log(sumAmount());
-
   return (
     <>
       <TableBody>
@@ -44,7 +42,6 @@ export const TotalsRow = (props: { invoice: any }) => {
             {invoice.brutto} {invoice.foreign_currency}
           </TableCell>
         </TableRow>
-        <TableFooter />
       </TableBody>
     </>
   );

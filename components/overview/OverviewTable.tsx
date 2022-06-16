@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Table, TableBody, Pagination, TableRow, Button, TableFooter } from "@mui/material";
-import { grey } from "@mui/material/colors";
+
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { authorizationOptions } from "../../utils/authorizationOptions";
+import { makeAuthorizationRequest } from "../../utils/makeAuthorizationRequest";
+
 import { OverviewItemRow } from "./OverviewItemRow";
 import { OverviewTableHeader } from "./OverviewTableHeader";
 
@@ -17,52 +19,41 @@ export const OverviewTable = (props: any) => {
   };
 
   useEffect(() => {
-    // Authorizes with oAuth
-    fetch("https://api.fynbill.fynbird.io/oauth", authorizationOptions)
-      .then(async (response) => {
-        const authData = await response.json();
+    const getInvoices = async () => {
+      if (page === 0) {
+        return "";
+      }
+      try {
+        // ideally it would use the same authorization token as before and if it expired (401), use the refresh token
+        const token = await makeAuthorizationRequest();
+        const res = await fetch(
+          `https://api.fynbill.fynbird.io/v1/invoices/debit/list?page=${page}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
 
-        // Returns Promise with error if no response
-        if (!response.ok) {
-          const error = (authData && authData.message) || response.status;
-          return Promise.reject(error);
-        }
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const {
+          _embedded: { list_debits },
+        } = await res.json();
 
-        // Set the fetched authorization token as a 'Bearer Token'
-        const fetchOptions = {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authData.access_token}`,
-          },
-        };
-        // if first or last page
-        page >= 1 &&
-          page <= pageCount &&
-          // once authorized, fetches list of invoices
-          fetch(
-            `https://api.fynbill.fynbird.io/v1/invoices/debit/list?page=${page}`,
-            fetchOptions
-          ).then(async (response) => {
-            const data = await response.json();
-            const listData = data._embedded?.list_debits;
-            listData && setCurrentList(listData);
-            if (!response.ok) {
-              const error = (authData && authData.message) || response.status;
-              return Promise.reject(error);
-            }
-          });
-      })
-
-      // Log  error if unsuccesfull
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+        setCurrentList(list_debits);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    getInvoices();
   }, [page]);
 
   useEffect(() => {
     page === 0 && setCurrentList(list);
   }, []);
+
+  useEffect(() => {});
 
   return (
     <>
@@ -73,6 +64,7 @@ export const OverviewTable = (props: any) => {
         </TableBody>
       </Table>
       <Pagination
+        defaultPage={1}
         color="primary"
         sx={{ padding: 1 }}
         page={page}
