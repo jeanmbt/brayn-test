@@ -19,7 +19,7 @@ export const OverviewItemRow = (props: any) => {
         return (
           <TableRow sx={{ bgcolor: setBackgroundColor(index) }} key={`${invoice.id}`}>
             <TableCell>
-              {invoice.billing_number ? invoice.billing_number : `id${invoice.id}`}
+              {invoice.billing_number ? `#${invoice.billing_number}` : `ID:${invoice.id}`}
             </TableCell>
             <TableCell>{invoice.receipt_date ? invoice.receipt_date : "-"}</TableCell>
             <TableCell>
