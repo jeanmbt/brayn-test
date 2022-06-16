@@ -31,7 +31,12 @@ export const OverviewItemRow = (props: any) => {
             <TableCell>{invoice.balance === 0 ? "paid (0)" : invoice.balance}</TableCell>
             <TableCell>{invoice.Debitor.name}</TableCell>
             <TableCell padding="none" align="center">
-              <Tooltip title="See invoice" placement="left">
+              <Tooltip
+                title={`see invoice ${
+                  invoice.billing_number ? `#${invoice.billing_number}` : `ID:${invoice.id}`
+                } details`}
+                placement="left"
+              >
                 <Button href={`invoice/${invoice.id}`} variant="contained">
                   <OpenInNewIcon />
                 </Button>
