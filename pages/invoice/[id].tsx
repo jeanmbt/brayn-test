@@ -6,12 +6,18 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { fetchFile } from "../../utils/fetchFile";
 import { InvoiceContainer } from "../../styles/componentStyles";
 import DownloadIcon from "@mui/icons-material/Download";
+import Head from "next/head";
 
 const Invoice: NextPage = (props: any) => {
   const invoice = props.invoice;
 
   return (
     <Container sx={{ padding: 2, marginBottom: 5 }}>
+      <Head>
+        <title>Brayn.io - Invoice #{invoice.id}</title>
+        <meta name="description" content="Brayn challenge by Jean Michel Battirola" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <ButtonGroup variant="text" aria-label="outlined button group">
         <Tooltip title="Back to invoice overview">
           <Button href="/">

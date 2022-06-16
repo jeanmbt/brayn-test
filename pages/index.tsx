@@ -13,7 +13,7 @@ const Home: NextPage = (props: any) => {
   return (
     <div>
       <Head>
-        <title>Brayn Challenge</title>
+        <title>Brayn.io Challenge</title>
         <meta name="description" content="Brayn challenge by Jean Michel Battirola" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
