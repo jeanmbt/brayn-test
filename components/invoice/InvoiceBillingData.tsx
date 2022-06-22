@@ -13,7 +13,7 @@ export const InvoiceBillingData = (props: any) => {
           <Typography variant="h6" fontSize={15}>
             Bill to:
           </Typography>
-          {/* TODO: abstract into function, make conditional */}
+
           <StyledBox>{debitor.name}</StyledBox>
           <StyledBox>{debitor.email}</StyledBox>
           <StyledBox>{debitor.phone}</StyledBox>

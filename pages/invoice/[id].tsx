@@ -1,16 +1,16 @@
 import { GetServerSideProps, NextPage } from "next";
 import { Container, Button, Typography, Divider, ButtonGroup, Tooltip } from "@mui/material";
 import { InvoiceBillingData, InvoiceTable } from "../../components/invoice/";
-import { makeAuthorizationRequest } from "../../utils/makeAuthorizationRequest";
+
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { fetchFile } from "../../utils/fetchFile";
+import { fetchFile } from "../../api/fetchFile";
 import { InvoiceContainer } from "../../styles/componentStyles";
 import DownloadIcon from "@mui/icons-material/Download";
 import Head from "next/head";
+import { makeAuthorizationRequest } from "../../api/makeAuthorizationRequest";
 
 const Invoice: NextPage = (props: any) => {
   const invoice = props.invoice;
-  console.log(invoice);
 
   return (
     <Container sx={{ padding: 2, marginBottom: 5 }}>

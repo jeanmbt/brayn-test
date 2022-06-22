@@ -14,6 +14,7 @@ import AppThemeOptions from "../styles/theme/AppThemeOptions";
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
+
 const clientSideEmotionCache = createEmotionCache();
 const Theme = createTheme(AppThemeOptions);
 

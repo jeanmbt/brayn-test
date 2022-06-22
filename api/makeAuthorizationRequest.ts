@@ -1,5 +1,6 @@
 import { authorizationOptions } from "./authorizationOptions";
 
+
 export async function makeAuthorizationRequest() {
   try {
     const res = await fetch(

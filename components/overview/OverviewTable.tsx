@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Table, TableBody, Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
-import { makeAuthorizationRequest } from "../../utils/makeAuthorizationRequest";
+import { makeAuthorizationRequest } from "../../api/makeAuthorizationRequest";
+
 import { OverviewItemRow, OverviewTableHead } from "./OverviewTableParts";
 
 export const OverviewTable = (props: any) => {
