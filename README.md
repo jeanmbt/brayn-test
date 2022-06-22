@@ -25,6 +25,7 @@ cd brayn-test
 ```
 
 **Installing dependencies**
+
 Node version: 18.1.0
 
 ```
