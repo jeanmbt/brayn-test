@@ -25,10 +25,26 @@ cd brayn-test
 ```
 
 **Installing dependencies**
+Node version: 18.1.0
 
 ```
 npm i
 ```
+
+**Adding Enviroment files**
+Add the authentication.
+Notice that any '$' must be escaped with a `\`.
+
+```
+touch .env.local  && echo -e "
+NEXT_PUBLIC_USERNAME=add_username\n
+NEXT_PUBLIC_PASSWORD=add_password_with_escaped_chars\n
+NEXT_PUBLIC_CLIENT_ID=add_client_id\n
+NEXT_PUBLIC_CLIENT_SECRET=add_client_secret\n
+NEXT_PUBLIC_GRANT_TYPE=password\n
+" >> ./.env.local
+```
+
 
 **Serving**
  
