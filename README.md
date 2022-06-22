@@ -32,7 +32,7 @@ npm i
 ```
 
 **Adding Enviroment files**
-Add the authentication.
+Add your own authentication.
 Notice that any '$' must be escaped with a `\`.
 
 ```
