@@ -56,4 +56,4 @@ NEXT_PUBLIC_GRANT_TYPE=password
 next dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)(or other set up enviroment) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) (or any other set up enviroment) with your browser to see the result.
