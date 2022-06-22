@@ -1,1 +1,1 @@
-export const BASE_URL = `https://api.fynbill.fynbird.io/v1/`
+export const BASE_URL = `https://api.fynbill.fynbird.io/v1`
