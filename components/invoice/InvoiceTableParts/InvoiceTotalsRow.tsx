@@ -11,7 +11,7 @@ export const InvoiceTotalsRow = (props: { invoice: any }) => {
   const sumAmount = () => {
     let result = 0;
     invoice.items.forEach((item: any) => {
-      result = result + item.amount;
+      result += item.amount;
     });
     return result;
   };

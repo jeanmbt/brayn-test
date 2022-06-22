@@ -2,6 +2,16 @@ import { Container, Box, Typography } from "@mui/material";
 import { StyledBox, StyledTypography } from "../../styles/componentStyles";
 import { formatDate } from "../../utils/formatDate";
 
+const Row = (props: any) => {
+  const { title, label, margin } = props;
+  return (
+    <StyledBox sx={{ marginTop: margin }}>
+      <StyledTypography>{title}</StyledTypography>
+      {label}
+    </StyledBox>
+  );
+};
+
 export const InvoiceBillingData = (props: any) => {
   const invoice = props.invoice;
   const debitor = invoice.Debitor;
@@ -24,31 +34,17 @@ export const InvoiceBillingData = (props: any) => {
         </Box>
 
         <Box sx={{ display: "grid", width: 200 }}>
-          {/* INVOICE DATE */}
-          <StyledBox>
-            <StyledTypography>Invoice date:</StyledTypography>{" "}
-            {invoice.receipt_date ? formatDate(invoice.receipt_date) : "not available"}
-          </StyledBox>
-
-          {/* DUE DATE */}
-          <StyledBox>
-            <StyledTypography>Due date:</StyledTypography>
-            {invoice.due_date && formatDate(invoice.due_date)}
-          </StyledBox>
-
-          {/* OPEN AMOUNT */}
-          <StyledBox>
-            <StyledTypography>Open amount:</StyledTypography> {invoice.balance}{" "}
-            {invoice.foreign_currency}
-          </StyledBox>
-
-          {/* PAYMENT METHOD */}
+          <Row
+            title="Invoice date:"
+            label={invoice.receipt_date ? formatDate(invoice.receipt_date) : "not available"}
+          />
+          <Row title="Due date:" label={invoice.due_date && formatDate(invoice.due_date)} />
+          <Row title="Open amount:" label={`${invoice.balance} ${invoice.foreign_currency}`} />
           {invoice.state === "paid" && (
-            <StyledBox sx={{ marginTop: 1 }}>
-              <Typography>
-                This invoice was paid by {invoice.payment_method.replace("_", " ")}
-              </Typography>
-            </StyledBox>
+            <Row
+              margin={1}
+              label={` This invoice was paid by ${invoice.payment_method.replace("_", " ")}`}
+            />
           )}
         </Box>
       </Container>

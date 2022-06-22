@@ -11,6 +11,7 @@ import { makeAuthorizationRequest } from "../../api/makeAuthorizationRequest";
 
 const Invoice: NextPage = (props: any) => {
   const invoice = props.invoice;
+  console.log(invoice);
 
   return (
     <Container sx={{ padding: 2, marginBottom: 5 }}>
