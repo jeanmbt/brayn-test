@@ -33,8 +33,11 @@ npm i
 ```
 
 **Adding Enviroment files**
+
 Add your own authentication.
-Notice that any '$' must be escaped with a `\`.
+- Notice that any '$' must be escaped with a `\`.
+- NEXT_PUBLIC_GRANT_TYPE=password can be kept as is.
+
 
 ```
 touch .env.local  && echo -e "
