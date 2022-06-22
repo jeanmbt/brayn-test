@@ -1,17 +1,16 @@
 import { GetServerSideProps, NextPage } from "next";
 import { Container, Button, Typography, Divider, ButtonGroup, Tooltip } from "@mui/material";
 import { InvoiceBillingData, InvoiceTable } from "../../components/invoice/";
-
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { fetchFile } from "../../api/fetchFile";
 import { InvoiceContainer } from "../../styles/componentStyles";
 import DownloadIcon from "@mui/icons-material/Download";
 import Head from "next/head";
 import { makeAuthorizationRequest } from "../../api/makeAuthorizationRequest";
+import { BASE_URL } from "../../api/utils/BASE_URL";
 
 const Invoice: NextPage = (props: any) => {
   const invoice = props.invoice;
-  console.log(invoice);
 
   return (
     <Container sx={{ padding: 2, marginBottom: 5 }}>
@@ -64,7 +63,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const getInvoice = async () => {
     const token = await makeAuthorizationRequest();
     try {
-      const res = await fetch(`https://api.fynbill.fynbird.io/v1/invoices/debit/list/${id}`, {
+      const res = await fetch(`${BASE_URL}/invoices/debit/list/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

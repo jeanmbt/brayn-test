@@ -13,7 +13,6 @@ export const InvoiceTable = (props: any) => {
         <Table>
           <InvoiceTableHead />
           <TableBody>
-            {/* Render a table row for each Invoice item */}
             {invoice.items.map((item: Item) => {
               return <InvoiceItemRow key={`item-${item.id}`} item={item} computeVat={computeVat} />;
             })}

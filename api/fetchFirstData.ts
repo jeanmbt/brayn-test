@@ -1,11 +1,12 @@
 import { makeAuthorizationRequest } from "./makeAuthorizationRequest";
+import { BASE_URL } from "./utils/BASE_URL";
 
 export const fetchFirstData = async () => {
   // Authorizes with oAuth
   const token = await makeAuthorizationRequest();
 
   try {
-    const res = await fetch(`https://api.fynbill.fynbird.io/v1/invoices/debit/list`, {
+    const res = await fetch(`${BASE_URL}/invoices/debit/list`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
