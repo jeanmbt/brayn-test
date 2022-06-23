@@ -1,3 +1,4 @@
+import { errorToJson } from "../utils/errorToJson";
 import { makeAuthorizationRequest } from "./makeAuthorizationRequest";
 import { BASE_URL } from "./utils/BASE_URL";
 
@@ -17,5 +18,6 @@ export const fetchFirstData = async () => {
     return data;
   } catch (e) {
     console.error(e);
+    return errorToJson(e)
   }
 }

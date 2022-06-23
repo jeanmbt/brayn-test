@@ -1,11 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Table, TableBody, Pagination } from "@mui/material";
+import { Table, TableBody, Pagination, Container } from "@mui/material";
 import { useEffect, useState } from "react";
 import { makeAuthorizationRequest } from "../../api/makeAuthorizationRequest";
+import { Error } from "../Error";
 
 import { OverviewItemRow, OverviewTableHead } from "./OverviewTableParts";
 
 export const OverviewTable = (props: any) => {
+  const [errorMessage, setErrorMessage] = useState<unknown>();
+  const [loading, setLoading] = useState(true);
   const { pageCount, list } = props;
   const [currentList, setCurrentList] = useState([]);
   const [page, setPage] = useState(0);
@@ -18,9 +21,11 @@ export const OverviewTable = (props: any) => {
   useEffect(() => {
     const getInvoices = async () => {
       if (page === 0) {
+        setLoading(false);
         return "";
       }
       try {
+        setLoading(true);
         // ideally it would use the same authorization token as before and if it expired (401), use the refresh token
         const token = await makeAuthorizationRequest();
         const res = await fetch(
@@ -37,7 +42,9 @@ export const OverviewTable = (props: any) => {
         setCurrentList(data._embedded?.list_debits);
       } catch (e) {
         console.error(e);
+        setErrorMessage(e.message);
       }
+      setLoading(false);
     };
     getInvoices();
   }, [page]);
@@ -45,6 +52,14 @@ export const OverviewTable = (props: any) => {
   useEffect(() => {
     page === 0 && setCurrentList(list);
   }, []);
+
+  if (loading) {
+    return <div> loading...</div>;
+  }
+
+  if (errorMessage) {
+    return <Error errorMessage={errorMessage} />;
+  }
 
   return (
     <>

@@ -7,11 +7,20 @@ import { paginationStyle } from "../styles/componentStyles";
 import { fetchFirstData } from "../api/fetchFirstData";
 
 const Home: NextPage = (props: any) => {
-  const list = props.data._embedded.list_debits;
+  const errorMessage = props.data.message;
+  const list = props.data?._embedded?.list_debits;
   const { page, page_count, total_items } = props.data;
 
+  if (errorMessage) {
+    return (
+      <Container sx={{ textAlign: "center", marginTop: 5 }}>
+        there was an error: {errorMessage}
+      </Container>
+    );
+  }
+
   return (
-    <div>
+    <div data-testid="home">
       <Head>
         <title>Brayn.io Challenge</title>
         <meta name="description" content="Brayn challenge by Jean Michel Battirola" />
@@ -35,7 +44,6 @@ const Home: NextPage = (props: any) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Gets first page of invoices before rendering page
   const data = await fetchFirstData();
-
   return {
     props: { data: data },
   };
