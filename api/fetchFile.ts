@@ -1,3 +1,4 @@
+import { serializeError } from "serialize-error";
 import { makeAuthorizationRequest } from "./makeAuthorizationRequest";
 
 export const fetchFile = async (invoice: any) => {
@@ -22,5 +23,6 @@ export const fetchFile = async (invoice: any) => {
       });
   } catch (e) {
     console.error(e);
+    return serializeError(e)
   }
 };
