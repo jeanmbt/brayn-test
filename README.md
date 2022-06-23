@@ -1,4 +1,4 @@
-## Brayn Coding Challenge
+## Brayn.io Coding Challenge
 
 ### About this project
 
