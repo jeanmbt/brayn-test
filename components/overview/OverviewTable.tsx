@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Table, TableBody, Pagination } from "@mui/material";
+import { Table, TableBody, Pagination, Container } from "@mui/material";
 import { useEffect, useState } from "react";
 import { makeAuthorizationRequest } from "../../api/makeAuthorizationRequest";
 
 import { OverviewItemRow, OverviewTableHead } from "./OverviewTableParts";
 
 export const OverviewTable = (props: any) => {
-  const [error, setError] = useState<any>();
+  const [errorMessage, setErrorMessage] = useState<any | unknown>();
   const [loading, setLoading] = useState(true);
   const { pageCount, list } = props;
   const [currentList, setCurrentList] = useState([]);
@@ -41,8 +41,12 @@ export const OverviewTable = (props: any) => {
         setCurrentList(data._embedded?.list_debits);
       } catch (e) {
         console.error(e);
-        setError(e);
-        console.log(error);
+
+        //TODO: find right type
+        if (e) {
+          setErrorMessage(e?.message);
+        }
+        //
       }
       setLoading(false);
     };
@@ -57,6 +61,13 @@ export const OverviewTable = (props: any) => {
     return <div> loading...</div>;
   }
 
+  if (errorMessage) {
+    return (
+      <Container sx={{ textAlign: "center", marginTop: 5 }}>
+        there was an error: {errorMessage}
+      </Container>
+    );
+  }
   return (
     <>
       <Table>
