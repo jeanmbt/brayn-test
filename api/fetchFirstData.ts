@@ -1,6 +1,6 @@
+import { errorToJson } from "../utils/errorToJson";
 import { makeAuthorizationRequest } from "./makeAuthorizationRequest";
 import { BASE_URL } from "./utils/BASE_URL";
-import {serializeError} from 'serialize-error';
 
 export const fetchFirstData = async () => {
   // Authorizes with oAuth
@@ -18,6 +18,6 @@ export const fetchFirstData = async () => {
     return data;
   } catch (e) {
     console.error(e);
-    return serializeError(e)
+    return errorToJson(e)
   }
 }

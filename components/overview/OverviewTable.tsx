@@ -2,11 +2,12 @@
 import { Table, TableBody, Pagination, Container } from "@mui/material";
 import { useEffect, useState } from "react";
 import { makeAuthorizationRequest } from "../../api/makeAuthorizationRequest";
+import { Error } from "../Error";
 
 import { OverviewItemRow, OverviewTableHead } from "./OverviewTableParts";
 
 export const OverviewTable = (props: any) => {
-  const [errorMessage, setErrorMessage] = useState<any | unknown>();
+  const [errorMessage, setErrorMessage] = useState<unknown>();
   const [loading, setLoading] = useState(true);
   const { pageCount, list } = props;
   const [currentList, setCurrentList] = useState([]);
@@ -41,12 +42,7 @@ export const OverviewTable = (props: any) => {
         setCurrentList(data._embedded?.list_debits);
       } catch (e) {
         console.error(e);
-
-        //TODO: find right type
-        if (e) {
-          setErrorMessage(e?.message);
-        }
-        //
+        setErrorMessage(e.message);
       }
       setLoading(false);
     };
@@ -62,12 +58,9 @@ export const OverviewTable = (props: any) => {
   }
 
   if (errorMessage) {
-    return (
-      <Container sx={{ textAlign: "center", marginTop: 5 }}>
-        there was an error: {errorMessage}
-      </Container>
-    );
+    return <Error errorMessage={errorMessage} />;
   }
+
   return (
     <>
       <Table>

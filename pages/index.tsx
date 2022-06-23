@@ -44,7 +44,6 @@ const Home: NextPage = (props: any) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Gets first page of invoices before rendering page
   const data = await fetchFirstData();
-  console.log(data);
   return {
     props: { data: data },
   };
