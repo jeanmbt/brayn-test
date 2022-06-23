@@ -6,8 +6,8 @@ import { makeAuthorizationRequest } from "../../api/makeAuthorizationRequest";
 import { OverviewItemRow, OverviewTableHead } from "./OverviewTableParts";
 
 export const OverviewTable = (props: any) => {
-  const [error, setError] = useState();
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<any>();
+  const [loading, setLoading] = useState(true);
   const { pageCount, list } = props;
   const [currentList, setCurrentList] = useState([]);
   const [page, setPage] = useState(0);
@@ -20,6 +20,7 @@ export const OverviewTable = (props: any) => {
   useEffect(() => {
     const getInvoices = async () => {
       if (page === 0) {
+        setLoading(false);
         return "";
       }
       try {
