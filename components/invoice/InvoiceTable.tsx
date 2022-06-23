@@ -1,16 +1,11 @@
 import { Paper, Table, TableBody, TableContainer } from "@mui/material";
+import { Invoice } from "../../types/invoice";
 import { Item } from "../../types/item";
-import { InvoiceItemRow, InvoiceTableHead, InvoiceTotalsRow } from "./InvoiceTableParts/";
+import { computeVat } from "../../utils/computeVat";
+import { InvoiceItemRow, InvoiceTableHead, InvoiceTotalsRow } from "./InvoiceTableParts";
 
-export const InvoiceTable = (props: { invoice: any }) => {
-  const invoice = props.invoice;
-
-  const computeVat = (amount: any, vat_rate: any) => {
-    if (amount && vat_rate) {
-      const vatTotal = (amount * vat_rate) / 100;
-      return vatTotal;
-    }
-  };
+export const InvoiceTable = (props: any) => {
+  const invoice: Invoice = props.invoice;
 
   return (
     <>
@@ -18,7 +13,6 @@ export const InvoiceTable = (props: { invoice: any }) => {
         <Table>
           <InvoiceTableHead />
           <TableBody>
-            {/* Render a table row for each Invoice item */}
             {invoice.items.map((item: Item) => {
               return <InvoiceItemRow key={`item-${item.id}`} item={item} computeVat={computeVat} />;
             })}

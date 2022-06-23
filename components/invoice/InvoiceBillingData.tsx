@@ -1,5 +1,7 @@
 import { Container, Box, Typography } from "@mui/material";
-import { StyledBox, StyledTypography } from "../../styles/componentStyles";
+import { formatDate } from "../../utils/formatDate";
+import { BillingRow } from "./BillingRow";
+import { BillTo } from "./BillTo";
 
 export const InvoiceBillingData = (props: any) => {
   const invoice = props.invoice;
@@ -12,41 +14,23 @@ export const InvoiceBillingData = (props: any) => {
           <Typography variant="h6" fontSize={15}>
             Bill to:
           </Typography>
-          {/* TODO: abstract into function, make conditional */}
-          <StyledBox>{debitor.name}</StyledBox>
-          <StyledBox>{debitor.email}</StyledBox>
-          <StyledBox>{debitor.phone}</StyledBox>
-          <StyledBox>
-            {debitor.street}
-            {debitor.postcode}, {debitor.location}
-          </StyledBox>
+          <BillTo debitor={debitor} />
         </Box>
-
         <Box sx={{ display: "grid", width: 200 }}>
-          {/* INVOICE DATE */}
-          <StyledBox>
-            <StyledTypography>Invoice date:</StyledTypography> {invoice.receipt_date}
-          </StyledBox>
-
-          {/* DUE DATE */}
-          <StyledBox>
-            <StyledTypography>Due date:</StyledTypography>
-            {invoice.due_date}
-          </StyledBox>
-
-          {/* OPEN AMOUNT */}
-          <StyledBox>
-            <StyledTypography>Open amount:</StyledTypography> {invoice.balance}{" "}
-            {invoice.foreign_currency}
-          </StyledBox>
-
-          {/* PAYMENT METHOD */}
+          <BillingRow
+            title="Invoice date:"
+            label={invoice.receipt_date ? formatDate(invoice.receipt_date) : "not available"}
+          />
+          <BillingRow title="Due date:" label={invoice.due_date && formatDate(invoice.due_date)} />
+          <BillingRow
+            title="Open amount:"
+            label={`${invoice.balance} ${invoice.foreign_currency}`}
+          />
           {invoice.state === "paid" && (
-            <StyledBox sx={{ marginTop: 1 }}>
-              <Typography>
-                This invoice was paid by {invoice.payment_method.replace("_", " ")}
-              </Typography>
-            </StyledBox>
+            <BillingRow
+              margin={1}
+              label={` This invoice was paid by ${invoice.payment_method.replace("_", " ")}`}
+            />
           )}
         </Box>
       </Container>

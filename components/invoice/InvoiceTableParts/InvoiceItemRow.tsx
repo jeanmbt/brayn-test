@@ -1,16 +1,16 @@
 import { TableCell, TableRow } from "@mui/material";
 import { Item } from "../../../types/item";
+import { computeVat } from "../../../utils/computeVat";
+import { sumSubtotal } from "../../../utils/sumSubtotal";
 
-export const InvoiceItemRow = (props: { item: Item; computeVat: any }) => {
-  const { item, computeVat } = props;
+interface InvoiceItemRow {
+  item: Item;
+  computeVat: (price: number, vat: number) => void;
+}
 
-  const hasVat = item.vat_rate ? true : false;
-
-  const sumSubtotal = (price: any, vat_rate: any) => {
-    if (price && vat_rate) {
-      return computeVat(price, vat_rate) + price;
-    }
-  };
+export const InvoiceItemRow = (props: InvoiceItemRow) => {
+  const { item } = props;
+  const hasVat = !!item.vat_rate;
 
   return (
     <>
@@ -21,11 +21,12 @@ export const InvoiceItemRow = (props: { item: Item; computeVat: any }) => {
           {item.price} {item.currency}
         </TableCell>
         <TableCell>
-          {computeVat(item.price, item.vat_rate)} {hasVat && item.currency}
+          {item.price && hasVat && computeVat(item.price, item.vat_rate)} {hasVat && item.currency}
         </TableCell>
         <TableCell>{item.vat_rate}%</TableCell>
         <TableCell>
-          {sumSubtotal(item.price, item.vat_rate)} {hasVat && item.currency}
+          {item.price && hasVat && sumSubtotal(item.price, item.vat_rate)}
+          {hasVat && item.currency}
         </TableCell>
       </TableRow>
     </>

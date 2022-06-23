@@ -6,7 +6,7 @@ export const OverviewTableHead = () => {
     <>
       <TableHead sx={{ bgcolor: blueGrey[100] }}>
         <TableRow>
-          <TableCell width={80}>#</TableCell>
+          <TableCell width={80}>Number</TableCell>
           <TableCell width={150}>Date</TableCell>
           <TableCell width={150}>Net</TableCell>
           <TableCell width={150}>Gross</TableCell>
