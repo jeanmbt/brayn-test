@@ -6,6 +6,8 @@ import { makeAuthorizationRequest } from "../../api/makeAuthorizationRequest";
 import { OverviewItemRow, OverviewTableHead } from "./OverviewTableParts";
 
 export const OverviewTable = (props: any) => {
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
   const { pageCount, list } = props;
   const [currentList, setCurrentList] = useState([]);
   const [page, setPage] = useState(0);
@@ -21,6 +23,7 @@ export const OverviewTable = (props: any) => {
         return "";
       }
       try {
+        setLoading(true);
         // ideally it would use the same authorization token as before and if it expired (401), use the refresh token
         const token = await makeAuthorizationRequest();
         const res = await fetch(
@@ -37,7 +40,10 @@ export const OverviewTable = (props: any) => {
         setCurrentList(data._embedded?.list_debits);
       } catch (e) {
         console.error(e);
+        setError(e);
+        console.log(error);
       }
+      setLoading(false);
     };
     getInvoices();
   }, [page]);
@@ -45,6 +51,10 @@ export const OverviewTable = (props: any) => {
   useEffect(() => {
     page === 0 && setCurrentList(list);
   }, []);
+
+  if (loading) {
+    return <div> loading...</div>;
+  }
 
   return (
     <>
